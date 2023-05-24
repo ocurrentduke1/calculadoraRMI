@@ -211,6 +211,16 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             }
         });
 
+        btnres.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double num1 = Double.parseDouble(txtnum.getText());
+                double num2 = Double.parseDouble(txtnum2.getText());
+                resultado = restar(num1, num2);
+                lblop.setText("+");
+            }
+        });
+
         btnequals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
