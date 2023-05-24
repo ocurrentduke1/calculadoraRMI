@@ -1,10 +1,12 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface operaciones extends Remote {
-    double sumar(double a, double b) throws RemoteException;
-    double restar(double a, double b) throws RemoteException;
-    double dividir(double a, double b) throws RemoteException;
-    double multiplicar(double a, double b) throws RemoteException;
+
+    public void registro(calculadoraCliente cliente) throws RemoteException;
+    public void setnum(double num1)throws RemoteException;
+    public ArrayList<Double> getNumeros()throws RemoteException;
+    void mensaje(String mensaje) throws RemoteException;
 
 }

@@ -1,15 +1,21 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 public abstract class interfazCalculadora extends JFrame implements operaciones {
 
+    public static implementacionCliente implementacion;
+
     //variables
     double resultado = 0;
-    private JTextArea selectedTextArea;
+
+    static String nombre = JOptionPane.showInputDialog("ingresa nombre");
+    static String nom = nombre;
 
     public interfazCalculadora() {
         this.setBounds(150, 0, 290, 350);
@@ -20,17 +26,15 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
 
     public void componentes() {
         //mensajes
-        JLabel lblnombre = new JLabel("usuario: victor");
+        JLabel lblnombre = new JLabel("usuario: "+ nom);
         lblnombre.setBounds(20, 15, 200, 20);
         JLabel lblres = new JLabel("resultado: ");
-        lblres.setBounds(20, 250, 200, 20);
-        JLabel lblop = new JLabel(":");
-        lblop.setBounds(135, 50, 200, 20);
+        lblres.setBounds(20, 280, 200, 20);
+        JLabel lblop = new JLabel("simbolo: ");
+        lblop.setBounds(20, 250, 200, 20);
         //txtarea
         JTextArea txtnum = new JTextArea("");
-        txtnum.setBounds(20, 50, 100, 30);
-        JTextArea txtnum2 = new JTextArea("");
-        txtnum2.setBounds(150, 50, 100, 30);
+        txtnum.setBounds(20, 50, 230, 30);
         //buttons numeros
         JButton btn1 = new JButton("1");
         btn1.setBounds(20, 90, 50, 30);
@@ -63,15 +67,15 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
         btnres.setBounds(200, 210, 50, 30);
         JButton btnequals = new JButton("=");
         btnequals.setBounds(80, 210, 50, 30);
-        //btn limpiar
+        //btn funciones
         JButton btnclear = new JButton("CE");
         btnclear.setBounds(140, 210, 50, 30);
+        JButton btnenviar = new JButton();
         //habilitar componentes
         this.getContentPane().add(lblnombre);
         this.getContentPane().add(lblres);
         this.getContentPane().add(lblop);
         this.getContentPane().add(txtnum);
-        this.getContentPane().add(txtnum2);
         this.getContentPane().add(btn1);
         this.getContentPane().add(btn2);
         this.getContentPane().add(btn3);
@@ -89,112 +93,78 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
         this.getContentPane().add(btnequals);
         this.getContentPane().add(btnclear);
 
-        //escribir dependiendo de la txt seleccionada
-
-        txtnum.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                selectedTextArea = txtnum;
-            }
-        });
-
-        txtnum2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                selectedTextArea = txtnum2;
-            }
-        });
-
         //metodos de botones numericos
 
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("1");
-                }
+                    txtnum.append("1");
             }
         });
         btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("2");
-                }
+                txtnum.append("2");
             }
         });
         btn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("3");
-                }
+                txtnum.append("3");
             }
         });
         btn4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("4");
-                }
+                txtnum.append("4");
             }
         });
         btn5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("5");
-                }
+                txtnum.append("5");
             }
         });
         btn6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("6");
-                }
+                txtnum.append("6");
             }
         });
         btn7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("7");
-                }
+                txtnum.append("7");
             }
         });
         btn8.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("8");
-                }
+
+                txtnum.append("8");
+
             }
         });
         btn9.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("9");
-                }
+                txtnum.append("9");
             }
         });
         btn0.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (selectedTextArea != null) {
-                    selectedTextArea.append("0");
-                }
+                txtnum.append("0");
             }
         });
 
@@ -205,9 +175,7 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             @Override
             public void actionPerformed(ActionEvent e) {
                 double num1 = Double.parseDouble(txtnum.getText());
-                double num2 = Double.parseDouble(txtnum2.getText());
-                resultado = sumar(num1, num2);
-                lblop.setText("+");
+                lblop.setText("simbolo: +");
             }
         });
 
@@ -215,9 +183,23 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             @Override
             public void actionPerformed(ActionEvent e) {
                 double num1 = Double.parseDouble(txtnum.getText());
-                double num2 = Double.parseDouble(txtnum2.getText());
-                resultado = restar(num1, num2);
-                lblop.setText("+");
+                lblop.setText("simbolo: -");
+            }
+        });
+
+        btnmul.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double num1 = Double.parseDouble(txtnum.getText());
+                lblop.setText("simbolo: X");
+            }
+        });
+
+        btndiv.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double num1 = Double.parseDouble(txtnum.getText());
+                lblop.setText("simbolo: /");
             }
         });
 
@@ -228,20 +210,48 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             }
         });
 
+        btnclear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtnum.setText("");
+            }
+        });
+
     }
 
-    public double sumar(double a, double b) {
-        return a + b;
-    }
+    public static void main(String[] args) throws NotBoundException, RemoteException {
 
-    public double restar(double a, double b) {
-        return a - b;
-    }
 
-    public double dividir(double a, double b) {
-        return a / b;
-    }
-    public double multiplicar(double a, double b) {
-        return a * b;
+        interfazCalculadora ventana = new interfazCalculadora() {
+            @Override
+            public void registro(calculadoraCliente cliente) throws RemoteException {
+
+            }
+
+            @Override
+            public void setnum(double num1) throws RemoteException {
+
+            }
+
+            @Override
+            public ArrayList<Double> getNumeros() throws RemoteException {
+                return null;
+            }
+
+            @Override
+            public void mensaje(String mensaje) throws RemoteException {
+
+            }
+        };
+        ventana.setVisible(true);
+
+        Registry registry;
+        try {
+            registry = LocateRegistry.getRegistry("localhost", 1005);
+        }catch (RemoteException e){
+            throw new RuntimeException(e);
+        }
+        operaciones operacionesop = (operaciones)registry.lookup("Calculadora") ;
+        new Thread(new implementacionCliente(nom,operacionesop)).start();
     }
 }
