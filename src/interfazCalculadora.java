@@ -11,20 +11,21 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
     double resultado = 0;
     private JTextArea selectedTextArea;
 
-    public interfazCalculadora(){
+    public interfazCalculadora() {
         this.setBounds(150, 0, 290, 350);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         componentes();
         setLayout(null);
     }
-    public void componentes(){
+
+    public void componentes() {
         //mensajes
         JLabel lblnombre = new JLabel("usuario: victor");
-        lblnombre.setBounds(20,15, 200,20);
+        lblnombre.setBounds(20, 15, 200, 20);
         JLabel lblres = new JLabel("resultado: ");
         lblres.setBounds(20, 250, 200, 20);
         JLabel lblop = new JLabel(":");
-        lblop.setBounds(135,50,200,20);
+        lblop.setBounds(135, 50, 200, 20);
         //txtarea
         JTextArea txtnum = new JTextArea("");
         txtnum.setBounds(20, 50, 100, 30);
@@ -32,39 +33,39 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
         txtnum2.setBounds(150, 50, 100, 30);
         //buttons numeros
         JButton btn1 = new JButton("1");
-        btn1.setBounds(20,90,50,30);
+        btn1.setBounds(20, 90, 50, 30);
         JButton btn2 = new JButton("2");
-        btn2.setBounds(80,90,50,30);
+        btn2.setBounds(80, 90, 50, 30);
         JButton btn3 = new JButton("3");
-        btn3.setBounds(140,90,50,30);
+        btn3.setBounds(140, 90, 50, 30);
         JButton btn4 = new JButton("4");
-        btn4.setBounds(20,130,50,30);
+        btn4.setBounds(20, 130, 50, 30);
         JButton btn5 = new JButton("5");
-        btn5.setBounds(80,130,50,30);
+        btn5.setBounds(80, 130, 50, 30);
         JButton btn6 = new JButton("6");
-        btn6.setBounds(140,130,50,30);
+        btn6.setBounds(140, 130, 50, 30);
         JButton btn7 = new JButton("7");
-        btn7.setBounds(20,170,50,30);
+        btn7.setBounds(20, 170, 50, 30);
         JButton btn8 = new JButton("8");
-        btn8.setBounds(80,170,50,30);
+        btn8.setBounds(80, 170, 50, 30);
         JButton btn9 = new JButton("9");
-        btn9.setBounds(140,170,50,30);
+        btn9.setBounds(140, 170, 50, 30);
         JButton btn0 = new JButton("0");
-        btn0.setBounds(20,210,50,30);
+        btn0.setBounds(20, 210, 50, 30);
         //buttons operaciones
         JButton btndiv = new JButton("/");
-        btndiv.setBounds(200,90,50,30);
+        btndiv.setBounds(200, 90, 50, 30);
         JButton btnmul = new JButton("X");
-        btnmul.setBounds(200,130,50,30);
+        btnmul.setBounds(200, 130, 50, 30);
         JButton btnsum = new JButton("+");
-        btnsum.setBounds(200,170,50,30);
+        btnsum.setBounds(200, 170, 50, 30);
         JButton btnres = new JButton("-");
-        btnres.setBounds(200,210,50,30);
+        btnres.setBounds(200, 210, 50, 30);
         JButton btnequals = new JButton("=");
-        btnequals.setBounds(80,210,50, 30);
+        btnequals.setBounds(80, 210, 50, 30);
         //btn limpiar
         JButton btnclear = new JButton("CE");
-        btnclear.setBounds(140,210,50, 30);
+        btnclear.setBounds(140, 210, 50, 30);
         //habilitar componentes
         this.getContentPane().add(lblnombre);
         this.getContentPane().add(lblres);
@@ -197,11 +198,6 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             }
         });
 
-        //OPERACIONES MATEMATICAS
-        public double sumar(double a, double b) {
-            return a + b;
-        }
-
 
         //metodos botones operacionales
 
@@ -210,20 +206,32 @@ public abstract class interfazCalculadora extends JFrame implements operaciones 
             public void actionPerformed(ActionEvent e) {
                 double num1 = Double.parseDouble(txtnum.getText());
                 double num2 = Double.parseDouble(txtnum2.getText());
-                try {
-                    resultado = sumar(num1, num2);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
+                resultado = sumar(num1, num2);
                 lblop.setText("+");
             }
         });
 
-       btnres.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               lblres.setText("resultado: "+ resultado);
-           }
-       });
+        btnequals.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lblres.setText("resultado:  " + resultado);
+            }
+        });
+
+    }
+
+    public double sumar(double a, double b) {
+        return a + b;
+    }
+
+    public double restar(double a, double b) {
+        return a - b;
+    }
+
+    public double dividir(double a, double b) {
+        return a / b;
+    }
+    public double multiplicar(double a, double b) {
+        return a * b;
     }
 }
